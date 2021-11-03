@@ -61,6 +61,13 @@ defmodule Oban.Integration.Worker do
         |> Task.await()
 
         :ok
+
+      "TASK_EXIT_ERROR" ->
+        send(pid, {:async, ref})
+
+        fn -> exit({:timeout, :not_a_list}) end
+        |> Task.async()
+        |> Task.await()
     end
   end
 
